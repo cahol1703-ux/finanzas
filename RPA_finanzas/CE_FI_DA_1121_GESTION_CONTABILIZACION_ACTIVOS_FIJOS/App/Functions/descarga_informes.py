@@ -511,6 +511,8 @@ def reintentos_boton(driver, intentos=3, espera=5):
     return False
 
 def comprobacion_archivos(carpeta):
+    if not carpeta or not isinstance(carpeta, (str, bytes, os.PathLike)):
+        return False
     if not os.path.exists(carpeta):
         return False
     # Verificar que es realmente una carpeta
@@ -521,6 +523,8 @@ def comprobacion_archivos(carpeta):
         archivos= []
         for elemento in elementos:
             ruta_completa = os.path.join(carpeta, elemento)
+            if not ruta_completa or not isinstance(ruta_completa, (str, bytes, os.PathLike)):
+                continue
             if os.path.isfile(ruta_completa):
                 try:
                     if os.path.getsize(ruta_completa) >= 0:  # Permite archivos de 0 bytes
@@ -529,7 +533,7 @@ def comprobacion_archivos(carpeta):
                     # Si no se puede acceder al archivo, lo omitimos
                     continue
         return len(archivos) > 0
-    except(OSError, PermissionError):
+    except (OSError, PermissionError, TypeError):
         return False
 
 
@@ -553,6 +557,10 @@ def verficacion_carpetas(carpeta_base,numeros_compañia):
 # CORRECCIÓN 3: el bloque finally ahora siempre cierra y limpia el driver correctamente,
 # forzando la re-creación de una sesión limpia en cada reintento.
 def descargar_para_compania(numero_compania, archivo_salida, url, user, passw, semaforo, max_intentos=3):
+    if not archivo_salida:
+        logger.error("No se especificó un directorio de salida para la descarga de la compañía %s", numero_compania)
+        raise DriverFatalError("Directorio de salida inválido para la descarga.")
+
     adquirido = False
     if semaforo:
         semaforo.acquire()

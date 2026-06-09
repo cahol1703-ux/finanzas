@@ -2,6 +2,7 @@ import os
 import platform
 import re
 import shutil
+import stat
 import subprocess
 from contextlib import contextmanager
 from pathlib import Path
@@ -59,6 +60,24 @@ def _run_process(command: list[str]) -> str | None:
     except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired) as exc:
         logger.debug("Error ejecutando comando %s: %s", command, exc)
         return None
+
+
+def _is_windows() -> bool:
+    return platform.system() == "Windows"
+
+
+def _ensure_executable(path: str) -> None:
+    if not os.path.exists(path):
+        return
+    if _is_windows():
+        return
+    try:
+        current_mode = os.stat(path).st_mode
+        if not (current_mode & stat.S_IXUSR):
+            os.chmod(path, current_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+            logger.debug("Se agregaron permisos de ejecución a ChromeDriver: %s", path)
+    except OSError as exc:
+        logger.warning("No se pudieron ajustar permisos de ejecución para ChromeDriver %s: %s", path, exc)
 
 
 def _find_chrome_executable() -> str | None:
@@ -168,6 +187,13 @@ def validar_entorno() -> bool:
             "ChromeDriver descargado no existe en la ruta esperada."
         )
 
+    if not _is_windows() and driver_path.lower().endswith(".exe"):
+        raise EnvironmentValidationError(
+            "ChromeDriver resuelto es un ejecutable de Windows en un sistema no Windows. "
+            "Verifique la configuración del entorno o elimine overrides manuales de chromedriver."
+        )
+
+    _ensure_executable(driver_path)
     chromedriver_version = obtener_version_chromedriver(driver_path)
     logger.info("Validación de entorno: Chrome=%s ChromeDriver=%s", chrome_version, chromedriver_version)
     return True
@@ -181,6 +207,13 @@ def crear_driver(download_dir: str | None = None, headless: bool = False) -> web
                 f"ChromeDriver no encontrado después de la instalación: {driver_path}"
             )
 
+        if not _is_windows() and driver_path.lower().endswith(".exe"):
+            raise DriverFatalError(
+                "ChromeDriver resuelto es un ejecutable de Windows en un sistema no Windows. "
+                "Verifique que no haya un override manual de chromedriver y que webdriver-manager resuelva la versión correcta."
+            )
+
+        _ensure_executable(driver_path)
         service = Service(driver_path)
         options = _crear_opciones(download_dir=download_dir, headless=headless)
         driver = webdriver.Chrome(service=service, options=options)
