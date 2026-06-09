@@ -45,8 +45,12 @@ def configurar_logger(nombre: str = LOGGER_NAME) -> logging.Logger:
     # Evitar propagación al logger raíz (impide que selenium escriba aquí)
     logger.propagate = False
 
+<<<<<<< HEAD
     return logger
 
 
 # Exponer un logger por defecto para importación sencilla desde otros módulos
 logger = configurar_logger()
+=======
+    return logger
+>>>>>>> 952da04 (Actualización)
