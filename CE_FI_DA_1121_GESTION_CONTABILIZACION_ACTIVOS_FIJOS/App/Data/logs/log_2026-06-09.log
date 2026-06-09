@@ -558,3 +558,119 @@ Stacktrace:
 2026-06-09 10:21:55,190 - CE1121 - ERROR - Error en descarga del informe de #compania 00534: _path_exists: path should be string, bytes, os.PathLike or integer, not NoneType
 2026-06-09 10:21:55,190 - CE1121 - INFO - Reintentando para #compañía 00534... (Intento 2/3)
 2026-06-09 19:29:59,351 - CE1121 - ERROR - ValidaciÃ³n de entorno fallÃ³: No se encontrÃ³ una instalaciÃ³n de Google Chrome. Instale Google Chrome o configure CHROME_BIN/GOOGLE_CHROME_BIN con la ruta de chrome.exe.
+2026-06-09 14:56:13,193 - CE1121 - ERROR - Validación de entorno falló: No se pudo determinar la versión de Google Chrome instalada.
+2026-06-09 15:09:50,362 - CE1121 - ERROR - Validación de entorno falló: No se pudo determinar la versión de Google Chrome instalada.
+2026-06-09 15:18:28,304 - CE1121 - ERROR - Validación de entorno falló: No se pudo determinar la versión de Google Chrome instalada.
+2026-06-09 15:28:14,705 - CE1121.driver - INFO - Versión detectada de Chrome: Created TensorFlow Lite XNNPACK delegate for CPU.
+[40380:39440:0609/152701.314:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[40380:38348:0609/152714.570:ERROR:chrome\browser\ui\webui\ntp\new_tab_ui.cc:54] Requested load of chrome://newtab/ for incorrect profile type.
+[40380:38348:0609/152714.571:ERROR:chrome\browser\ui\webui\ntp\new_tab_ui.cc:54] Requested load of chrome://newtab/ for incorrect profile type.
+[40380:39440:0609/152722.028:ERROR:google_apis\gcm\engine\connection_factory_impl.cc:435] Failed to connect to MCS endpoint with error -118
+[40380:39440:0609/152730.828:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[40380:38348:0609/152757.948:ERROR:chrome\browser\ui\webui\ntp\new_tab_ui.cc:54] Requested load of chrome://newtab/ for incorrect profile type.
+[40380:38348:0609/152757.961:ERROR:chrome\browser\ui\webui\ntp\new_tab_ui.cc:54] Requested load of chrome://newtab/ for incorrect profile type.
+[40380:38348:0609/152814.262:ERROR:chrome\browser\ui\webui\ntp\new_tab_ui.cc:54] Requested load of chrome://newtab/ for incorrect profile type.
+2026-06-09 15:28:14,706 - CE1121 - ERROR - Validación de entorno falló: No se pudo determinar la versión de Google Chrome instalada.
+2026-06-09 15:49:17,829 - CE1121.driver - INFO - Versión detectada de Chrome: Abriendo en una sesión existente del navegador
+2026-06-09 15:49:17,830 - CE1121 - ERROR - Validación de entorno falló: No se pudo determinar la versión de Google Chrome instalada.
+2026-06-09 15:51:25,955 - CE1121.driver - INFO - Versión detectada de Chrome: Abriendo en una sesión existente del navegador
+2026-06-09 15:51:25,955 - CE1121 - ERROR - Validación de entorno falló: No se pudo determinar la versión de Google Chrome instalada.
+2026-06-09 16:08:40,012 - CE1121 - INFO - Checkpoint cargado desde 'C:\RPA_finanzas\CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS\Data\json\checkpoint.json'. Paso actual: descargar_informes
+2026-06-09 16:08:40,012 - CE1121 - INFO - â”€â”€â”€ PASO 2: Descarga de informes â”€â”€â”€
+2026-06-09 16:08:50,455 - CE1121 - INFO - Driver Selenium creado correctamente con webdriver-manager
+2026-06-09 16:08:52,895 - CE1121 - INFO - Driver Selenium creado correctamente con webdriver-manager
+2026-06-09 16:08:58,034 - CE1121 - ERROR - Error escribiendo texto en JDE (Password): Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=149.0.7827.54)
+Stacktrace:
+	chromedriver!GetHandleVerifier [0xf9fa13+106c3]
+	chromedriver!GetHandleVerifier [0xf9fa54+10704]
+	chromedriver!(No symbol) [0xd9a830]
+	chromedriver!(No symbol) [0xd79693]
+	chromedriver!(No symbol) [0xe0c61b]
+	chromedriver!(No symbol) [0xe22d59]
+	chromedriver!(No symbol) [0xe06026]
+	chromedriver!(No symbol) [0xdd9289]
+	chromedriver!(No symbol) [0xdda054]
+	chromedriver!GetHandleVerifier [0x12244fa+2951aa]
+	chromedriver!GetHandleVerifier [0x121fb56+290806]
+	chromedriver!GetHandleVerifier [0x123ff8b+2b0c3b]
+	chromedriver!GetHandleVerifier [0xfb9ed6+2ab86]
+	chromedriver!GetHandleVerifier [0xfc124d+31efd]
+	chromedriver!GetHandleVerifier [0xfa83d8+19088]
+	chromedriver!GetHandleVerifier [0xfa8585+19235]
+	chromedriver!GetHandleVerifier [0xf9125f+1f0f]
+	KERNEL32!BaseThreadInitThunk [0x76805d49+19]
+	ntdll!RtlInitializeExceptionChain [0x76f2ce3b+6b]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x76f2cdc1+231]
+
+2026-06-09 16:08:58,036 - CE1121 - ERROR - Error al hacer click en el elemento '//*[@id="mainLoginTable"]/tbody/tr[4]/td/input': Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=149.0.7827.54)
+Stacktrace:
+	chromedriver!GetHandleVerifier [0xf9fa13+106c3]
+	chromedriver!GetHandleVerifier [0xf9fa54+10704]
+	chromedriver!(No symbol) [0xd9a830]
+	chromedriver!(No symbol) [0xd79693]
+	chromedriver!(No symbol) [0xe0c61b]
+	chromedriver!(No symbol) [0xe22d59]
+	chromedriver!(No symbol) [0xe06026]
+	chromedriver!(No symbol) [0xdd9289]
+	chromedriver!(No symbol) [0xdda054]
+	chromedriver!GetHandleVerifier [0x12244fa+2951aa]
+	chromedriver!GetHandleVerifier [0x121fb56+290806]
+	chromedriver!GetHandleVerifier [0x123ff8b+2b0c3b]
+	chromedriver!GetHandleVerifier [0xfb9ed6+2ab86]
+	chromedriver!GetHandleVerifier [0xfc124d+31efd]
+	chromedriver!GetHandleVerifier [0xfa83d8+19088]
+	chromedriver!GetHandleVerifier [0xfa8585+19235]
+	chromedriver!GetHandleVerifier [0xf9125f+1f0f]
+	KERNEL32!BaseThreadInitThunk [0x76805d49+19]
+	ntdll!RtlInitializeExceptionChain [0x76f2ce3b+6b]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x76f2cdc1+231]
+
+2026-06-09 16:08:58,039 - CE1121 - ERROR - Error en descarga del informe de compaÃ±Ã­a 00533: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=149.0.7827.54)
+Stacktrace:
+	chromedriver!GetHandleVerifier [0xf9fa13+106c3]
+	chromedriver!GetHandleVerifier [0xf9fa54+10704]
+	chromedriver!(No symbol) [0xd9a830]
+	chromedriver!(No symbol) [0xd79693]
+	chromedriver!(No symbol) [0xe0c61b]
+	chromedriver!(No symbol) [0xe22d59]
+	chromedriver!(No symbol) [0xe06026]
+	chromedriver!(No symbol) [0xdd9289]
+	chromedriver!(No symbol) [0xdda054]
+	chromedriver!GetHandleVerifier [0x12244fa+2951aa]
+	chromedriver!GetHandleVerifier [0x121fb56+290806]
+	chromedriver!GetHandleVerifier [0x123ff8b+2b0c3b]
+	chromedriver!GetHandleVerifier [0xfb9ed6+2ab86]
+	chromedriver!GetHandleVerifier [0xfc124d+31efd]
+	chromedriver!GetHandleVerifier [0xfa83d8+19088]
+	chromedriver!GetHandleVerifier [0xfa8585+19235]
+	chromedriver!GetHandleVerifier [0xf9125f+1f0f]
+	KERNEL32!BaseThreadInitThunk [0x76805d49+19]
+	ntdll!RtlInitializeExceptionChain [0x76f2ce3b+6b]
+	ntdll!RtlGetAppContainerNamedObjectPath [0x76f2cdc1+231]
+
+2026-06-09 16:08:58,041 - CE1121 - INFO - Reintentando para compaÃ±Ã­a 00533... (Intento 1/3)
+2026-06-09 16:09:01,813 - CE1121 - ERROR - Error en descarga del informe de compaÃ±Ã­a 00534: 'NoneType' object has no attribute 'is_displayed'
+2026-06-09 16:09:01,813 - CE1121 - INFO - Reintentando para compaÃ±Ã­a 00534... (Intento 1/3)
+2026-06-09 21:32:41,987 - CE1121 - INFO - datos leÃ­dos: 3 filas
+2026-06-09 21:32:41,988 - CE1121 - WARNING - No se encontrÃ³ correo para el responsable: Alice
+2026-06-09 21:32:41,995 - CE1121 - INFO - archivo guardado en /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Bob/Bob.xlsx
+2026-06-09 21:32:41,995 - CE1121 - INFO - [dry_run] Preparado para enviar a bob@example.com: Registros pendientes para Bob (adj: /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Bob/Bob.xlsx)
+2026-06-09 21:32:43,000 - CE1121 - WARNING - No se encontrÃ³ correo para el responsable: Charlie
+2026-06-09 21:33:55,740 - CE1121 - INFO - datos leÃ­dos: 3 filas
+2026-06-09 21:33:55,751 - CE1121 - INFO - archivo guardado en /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Alice/Alice.xlsx
+2026-06-09 21:33:55,751 - CE1121 - INFO - [dry_run] Preparado para enviar a alice@example.com: Registros pendientes para Alice (adj: /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Alice/Alice.xlsx)
+2026-06-09 21:33:56,759 - CE1121 - INFO - archivo guardado en /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Bob/Bob.xlsx
+2026-06-09 21:33:56,759 - CE1121 - INFO - [dry_run] Preparado para enviar a bob@example.com: Registros pendientes para Bob (adj: /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Bob/Bob.xlsx)
+2026-06-09 21:33:57,759 - CE1121 - WARNING - No se encontrÃ³ correo para el responsable: Charlie
+2026-06-09 21:35:42,389 - CE1121 - INFO - datos leÃ­dos: 3 filas
+2026-06-09 21:35:42,399 - CE1121 - INFO - archivo guardado en /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Alice/Alice.xlsx
+2026-06-09 21:35:42,399 - CE1121 - INFO - [dry_run] Preparado para enviar a alice@example.com: Registros pendientes para Alice (adj: /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Alice/Alice.xlsx)
+2026-06-09 21:35:43,407 - CE1121 - INFO - archivo guardado en /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Bob/Bob.xlsx
+2026-06-09 21:35:43,407 - CE1121 - INFO - [dry_run] Preparado para enviar a bob@example.com: Registros pendientes para Bob (adj: /workspaces/finanzas/CE_FI_DA_1121_GESTION_CONTABILIZACION_ACTIVOS_FIJOS/App/Data/temp_dry/Bob/Bob.xlsx)
+2026-06-09 21:35:44,407 - CE1121 - WARNING - No se encontrÃ³ correo para el responsable: Charlie

@@ -923,9 +923,14 @@ def lanzar_instancias(ruta_excel: str, excel_reglas: str, url_base: str, passw: 
 
         for diccionario in [dict1, dict2, dict3]:
             if diccionario:
-                driver, *_ = iniciar_driver(None, url_base)
-                drivers.append(driver)
-                all_drivers.append(driver)
+                try:
+                    driver, *_ = iniciar_driver(None, url_base)
+                    drivers.append(driver)
+                    if driver is not None:
+                        all_drivers.append(driver)
+                except Exception as e_drv:
+                    logger.error("Error iniciando driver para PV/OV: %s", e_drv)
+                    drivers.append(None)
             else:
                 drivers.append(None)
 
@@ -938,9 +943,16 @@ def lanzar_instancias(ruta_excel: str, excel_reglas: str, url_base: str, passw: 
         drivers = []
         for diccionario in [n_origen1, n_origen2, n_origen3]:
             if diccionario:
-                driver, *_ = iniciar_driver(None, url_base)
-                drivers.append(driver)
-                all_drivers.append(driver)
+                try:
+                    driver, *_ = iniciar_driver(None, url_base)
+                    if driver is not None:
+                        drivers.append(driver)
+                        all_drivers.append(driver)
+                    else:
+                        drivers.append(None)
+                except Exception as e_drv:
+                    logger.error("Error iniciando driver para números de origen: %s", e_drv)
+                    drivers.append(None)
             else:
                 drivers.append(None)
 

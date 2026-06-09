@@ -103,13 +103,28 @@ def _find_chrome_executable() -> str | None:
 
 def obtener_version_chrome() -> str | None:
     chrome_path = _find_chrome_executable()
+
     if not chrome_path:
         return None
 
-    salida = _run_process([chrome_path, "--version"])
-    if salida:
+    try:
+        result = subprocess.run(
+            f'"{chrome_path}" --version',
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            shell=True
+        )
+
+        salida = result.stdout.strip() or result.stderr.strip()
+
+        logger.info(f"Versión detectada de Chrome: {salida}")
+
         return _parse_version(salida)
-    return None
+
+    except Exception as e:
+        logger.error(f"Error obteniendo versión de Chrome: {e}")
+        return None
 
 
 def obtener_version_chromedriver(driver_path: str) -> str | None:
@@ -174,7 +189,9 @@ def validar_entorno() -> bool:
         )
 
     try:
-        driver_path = ChromeDriverManager(log_level=0).install()
+        driver_path = ChromeDriverManager(
+            driver_version="149.0.7827.54"
+        ).install()
     except Exception as exc:
         raise EnvironmentValidationError(
             f"No se pudo descargar o resolver ChromeDriver: {exc}. Compruebe acceso a internet y permisos."
@@ -199,7 +216,9 @@ def validar_entorno() -> bool:
 
 def crear_driver(download_dir: str | None = None, headless: bool = False) -> webdriver.Chrome:
     try:
-        driver_path = ChromeDriverManager(log_level=0).install()
+        driver_path = ChromeDriverManager(
+            driver_version="149.0.7827.54"
+        ).install()
         if not os.path.exists(driver_path):
             raise DriverFatalError(
                 f"ChromeDriver no encontrado después de la instalación: {driver_path}"
