@@ -82,24 +82,22 @@ def _ensure_executable(path: str) -> None:
 
 def _find_chrome_executable() -> str | None:
     candidates: list[str] = []
-    if platform.system() == "Windows":
-        candidates.extend([
-            shutil.which("chrome"),
-            os.path.join(os.environ.get("PROGRAMFILES", "C:\\Program Files"), "Google", "Chrome", "Application", "chrome.exe"),
-            os.path.join(os.environ.get("PROGRAMFILES(X86)", "C:\\Program Files (x86)"), "Google", "Chrome", "Application", "chrome.exe"),
-            os.path.join(os.environ.get("LOCALAPPDATA", ""), "Google", "Chrome", "Application", "chrome.exe"),
-        ])
-    else:
-        candidates.extend([
-            shutil.which("google-chrome"),
-            shutil.which("chrome"),
-            shutil.which("chromium-browser"),
-            shutil.which("chromium"),
-        ])
+    env_chrome = os.environ.get("CHROME_BIN") or os.environ.get("GOOGLE_CHROME_BIN")
+    if env_chrome:
+        candidates.append(env_chrome)
+
+    candidates.extend([
+        shutil.which("chrome"),
+        os.path.join(os.environ.get("PROGRAMFILES", "C:\\Program Files"), "Google", "Chrome", "Application", "chrome.exe"),
+        os.path.join(os.environ.get("PROGRAMFILES(X86)", "C:\\Program Files (x86)"), "Google", "Chrome", "Application", "chrome.exe"),
+        os.path.join(os.environ.get("LOCALAPPDATA", ""), "Google", "Chrome", "Application", "chrome.exe"),
+    ])
 
     for candidate in candidates:
         if candidate and os.path.isfile(candidate):
             return os.path.abspath(candidate)
+
+    logger.debug("No se encontró Google Chrome. Candidatos evaluados: %s", candidates)
     return None
 
 
@@ -166,7 +164,7 @@ def validar_entorno() -> bool:
     chrome_path = _find_chrome_executable()
     if not chrome_path:
         raise EnvironmentValidationError(
-            "No se encontró una instalación de Google Chrome. Instale Chrome o configure la variable de entorno correspondiente."
+            "No se encontró una instalación de Google Chrome. Instale Google Chrome o configure CHROME_BIN/GOOGLE_CHROME_BIN con la ruta de chrome.exe."
         )
 
     chrome_version = obtener_version_chrome()
