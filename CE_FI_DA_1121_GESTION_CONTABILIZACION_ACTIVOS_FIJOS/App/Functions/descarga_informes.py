@@ -52,6 +52,7 @@ def iniciar_driver(base_dir: str | None, url: str, numero_compañia: str | None 
 
     driver = crear_driver(download_dir=ruta_libros)
     logger.info("Driver Selenium creado correctamente con webdriver-manager")
+    print(f"URL RECIBIDA: {url}")
     driver.get(url)
     return driver, ruta_libros, archivo_final
 
