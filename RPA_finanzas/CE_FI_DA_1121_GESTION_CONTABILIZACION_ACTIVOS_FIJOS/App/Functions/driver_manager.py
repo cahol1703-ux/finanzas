@@ -13,6 +13,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+# Permitir a webdriver-manager resolver descargas en entornos con SSL restringido.
+# Esto corresponde a: os.environ['WDM_SSL_VERIFY'] = '0'
+os.environ.setdefault("WDM_SSL_VERIFY", "0")
+
 from .logs_config import configurar_logger
 
 logger = configurar_logger("CE1121.driver")
