@@ -557,3 +557,4 @@ Stacktrace:
 2026-06-09 10:21:50,526 - CE1121 - INFO - Reintentando para #compa耥a 00533... (Intento 2/3)
 2026-06-09 10:21:55,190 - CE1121 - ERROR - Error en descarga del informe de #compania 00534: _path_exists: path should be string, bytes, os.PathLike or integer, not NoneType
 2026-06-09 10:21:55,190 - CE1121 - INFO - Reintentando para #compa耥a 00534... (Intento 2/3)
+2026-06-09 19:29:59,351 - CE1121 - ERROR - Validaci贸n de entorno fall贸: No se encontr贸 una instalaci贸n de Google Chrome. Instale Google Chrome o configure CHROME_BIN/GOOGLE_CHROME_BIN con la ruta de chrome.exe.
