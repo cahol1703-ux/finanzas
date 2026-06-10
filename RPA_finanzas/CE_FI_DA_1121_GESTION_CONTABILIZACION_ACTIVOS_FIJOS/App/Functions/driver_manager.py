@@ -189,9 +189,8 @@ def validar_entorno() -> bool:
         )
 
     try:
-        driver_path = ChromeDriverManager(
-            driver_version="149.0.7827.54"
-        ).install()
+        driver_path = ChromeDriverManager().install()
+        
     except Exception as exc:
         raise EnvironmentValidationError(
             f"No se pudo descargar o resolver ChromeDriver: {exc}. Compruebe acceso a internet y permisos."
