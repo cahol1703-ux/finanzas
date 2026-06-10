@@ -99,7 +99,10 @@ def ejecutar_proceso() -> None:  # noqa: C901  (función larga por diseño check
                     logger.info("Sesión activa detectada. Se omite login.")
                 else:
                     # Texto de error multi-clave separado por | para mayor robustez
-                    login(driver, "incorrectos|error de usuario|credenciales", USER, PASS)
+                    if not login(driver, "incorrectos|error de usuario|credenciales", USER, PASS):
+                        logger.error("No se pudo iniciar sesión en JDE durante el Paso 1.")
+                        print("ERROR: No se pudo iniciar sesión en JDE.")
+                        return
 
                 verificar_2A(driver)
                 cerrar_sesion(driver)

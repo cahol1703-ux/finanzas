@@ -150,6 +150,7 @@ def _crear_opciones(download_dir: str | None = None, headless: bool = False) -> 
 
     if headless:
         options.add_argument("--headless=new")
+        options.add_argument("--window-size=1920,1080")
 
     if download_dir:
         options.add_experimental_option("prefs", {

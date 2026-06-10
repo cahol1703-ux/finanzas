@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 from .logs_config import configurar_logger
 
 logger = configurar_logger()
@@ -18,16 +19,16 @@ def guardar_estado(estado: dict, archivo: str, variables: dict | None = None) ->
             estado.update(variables)
 
         # Crear directorio si no existe
-        directorio = os.path.dirname(archivo)
-        if directorio:
-            os.makedirs(directorio, exist_ok=True)
+        archivo_path = Path(archivo)
+        directorio = archivo_path.parent
+        directorio.mkdir(parents=True, exist_ok=True)
 
         # Escritura atómica: escribir en temporal y luego renombrar
         # Evita dejar el checkpoint corrupto si el proceso muere a mitad de escritura
-        ruta_temporal = archivo + ".tmp"
+        ruta_temporal = archivo_path.with_suffix(archivo_path.suffix + ".tmp")
         with open(ruta_temporal, "w", encoding="utf-8") as f:
             json.dump(estado, f, indent=4, ensure_ascii=False)
-        os.replace(ruta_temporal, archivo)
+        os.replace(ruta_temporal, archivo_path)
 
         logger.debug("Checkpoint guardado correctamente en %s", archivo)
         return True
@@ -51,17 +52,15 @@ def cargar_estado(archivo: str) -> dict | None:
     o None si el archivo existe pero está corrupto/ilegible.
     """
     try:
-        if not os.path.exists(archivo):
+        archivo_path = Path(archivo)
+        if not archivo_path.exists():
             logger.info("No existe checkpoint en '%s'. Se inicia desde cero.", archivo)
-            # Crear el archivo vacío para futuras escrituras
-            directorio = os.path.dirname(archivo)
-            if directorio:
-                os.makedirs(directorio, exist_ok=True)
-            with open(archivo, "w", encoding="utf-8") as f:
+            archivo_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(archivo_path, "w", encoding="utf-8") as f:
                 json.dump({}, f, indent=4)
             return {}
 
-        with open(archivo, "r", encoding="utf-8") as f:
+        with open(archivo_path, "r", encoding="utf-8") as f:
             contenido = f.read().strip()
 
         if not contenido:
@@ -90,13 +89,12 @@ def cargar_estado(archivo: str) -> dict | None:
 def vaciar_json(ruta: str) -> bool:
     """Vacía completamente el checkpoint. Retorna True si tuvo éxito."""
     try:
-        directorio = os.path.dirname(ruta)
-        if directorio:
-            os.makedirs(directorio, exist_ok=True)
-        with open(ruta, "w", encoding="utf-8") as f:
+        archivo_path = Path(ruta)
+        archivo_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(archivo_path, "w", encoding="utf-8") as f:
             json.dump({}, f, indent=4)
-        print(f"Checkpoint '{ruta}' reiniciado correctamente.")
-        logger.info("Checkpoint vaciado: %s", ruta)
+        print(f"Checkpoint '{archivo_path}' reiniciado correctamente.")
+        logger.info("Checkpoint vaciado: %s", archivo_path)
         return True
     except Exception as e:
         print(f"Error al vaciar el checkpoint: {e}")
@@ -110,9 +108,12 @@ def vaciar_json_manteniendo_excel(ruta: str) -> bool:
     Retorna True si tuvo éxito.
     """
     try:
+        archivo_path = Path(ruta)
+        archivo_path.parent.mkdir(parents=True, exist_ok=True)
+
         datos = {}
-        if os.path.exists(ruta):
-            with open(ruta, "r", encoding="utf-8") as f:
+        if archivo_path.exists():
+            with open(archivo_path, "r", encoding="utf-8") as f:
                 contenido = f.read().strip()
             if contenido:
                 try:
@@ -126,11 +127,11 @@ def vaciar_json_manteniendo_excel(ruta: str) -> bool:
             nuevo_contenido["excel_referencia"] = datos["excel_referencia"]
             print(f"Se conservó 'excel_referencia': {datos['excel_referencia']}")
 
-        with open(ruta, "w", encoding="utf-8") as f:
+        with open(archivo_path, "w", encoding="utf-8") as f:
             json.dump(nuevo_contenido, f, indent=4)
 
-        print(f"Checkpoint '{ruta}' reiniciado conservando referencia.")
-        logger.info("Checkpoint vaciado conservando excel_referencia: %s", ruta)
+        print(f"Checkpoint '{archivo_path}' reiniciado conservando referencia.")
+        logger.info("Checkpoint vaciado conservando excel_referencia: %s", archivo_path)
         return True
 
     except Exception as e:
