@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 chromedriver*
 
+# Evitar subir credenciales en .env
+config/.env
+
