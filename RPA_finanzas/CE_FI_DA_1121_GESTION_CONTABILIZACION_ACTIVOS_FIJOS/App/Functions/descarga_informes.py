@@ -253,10 +253,22 @@ def login(driver: Any, texto_error: str, usuariow: str, passw: str, max_intentos
         try:
             hacer_click_elementos(driver, By.XPATH, '//*[@id="mainLoginTable"]/tbody/tr[4]/td/input', timeout=30)
         except WebDriverException as e:
-            logger.error("No se pudo hacer click en el botón de login: %s", e)
-            intentos += 1
-            time.sleep(2)
-            continue
+            logger.warning("No se pudo hacer click en el botón de login con click directo: %s", e)
+            try:
+                password_field = driver.find_element(By.ID, "Password")
+                password_field.send_keys(Keys.ENTER)
+                logger.debug("Intento de login enviado con ENTER en el campo Password.")
+            except Exception as inner:
+                logger.warning("No se pudo enviar login con ENTER: %s", inner)
+                try:
+                    boton_login = driver.find_element(By.XPATH, '//*[@id="mainLoginTable"]/tbody/tr[4]/td/input')
+                    driver.execute_script("arguments[0].click();", boton_login)
+                    logger.debug("Intento de login enviado con click por JavaScript.")
+                except Exception as inner2:
+                    logger.error("No se pudo enviar el login por ninguna vía: %s", inner2)
+                    intentos += 1
+                    time.sleep(2)
+                    continue
 
         if verificar_error_login(driver, By.ID, "SignInError", texto_error):
             print(f"Login fallido, intento {intentos + 1} de {max_intentos}.")
@@ -265,12 +277,17 @@ def login(driver: Any, texto_error: str, usuariow: str, passw: str, max_intentos
 
         iframe_xpath = '//*[@id="e1menuAppIframe"]'
         try:
-            WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, iframe_xpath)))
-            logger.debug("Login exitoso.")
-            time.sleep(2)
-            return True
+            driver.switch_to.default_content()
+            if WebDriverWait(driver, 60).until(EC.visibility_of_element_located((By.XPATH, iframe_xpath))):
+                logger.debug("Login exitoso.")
+                time.sleep(2)
+                return True
         except TimeoutException:
-            logger.warning("No se detectó el iframe de JDE tras el login. Reintentando...")
+            logger.warning(
+                "No se detectó el iframe de JDE tras el login en 60 segundos. "
+                "URL actual: %s",
+                driver.current_url,
+            )
             intentos += 1
             continue
         except WebDriverException as e:

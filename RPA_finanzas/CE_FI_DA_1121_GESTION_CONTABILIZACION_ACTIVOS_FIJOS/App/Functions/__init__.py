@@ -3,7 +3,6 @@
 from . import (
     descarga_informes,
     envio_correos,
-    filtros_complejos,
     filtros_simples,
     logs_config,
     puntos_de_control,
