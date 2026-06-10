@@ -216,9 +216,9 @@ def validar_entorno() -> bool:
 
 def crear_driver(download_dir: str | None = None, headless: bool = False) -> webdriver.Chrome:
     try:
-        driver_path = ChromeDriverManager(
-            driver_version="149.0.7827.54"
-        ).install()
+        # No fijar una versión de chromedriver; dejar que webdriver-manager resuelva
+        # la versión compatible con el navegador instalado o la que esté disponible.
+        driver_path = ChromeDriverManager().install()
         if not os.path.exists(driver_path):
             raise DriverFatalError(
                 f"ChromeDriver no encontrado después de la instalación: {driver_path}"

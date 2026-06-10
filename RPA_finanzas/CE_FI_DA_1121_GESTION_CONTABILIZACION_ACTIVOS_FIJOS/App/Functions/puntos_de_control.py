@@ -93,7 +93,7 @@ def vaciar_json(ruta: str) -> bool:
         archivo_path.parent.mkdir(parents=True, exist_ok=True)
         with open(archivo_path, "w", encoding="utf-8") as f:
             json.dump({}, f, indent=4)
-        print(f"Checkpoint '{archivo_path}' reiniciado correctamente.")
+        logger.info("Checkpoint '%s' reiniciado correctamente.", archivo_path)
         logger.info("Checkpoint vaciado: %s", archivo_path)
         return True
     except Exception as e:
@@ -130,7 +130,7 @@ def vaciar_json_manteniendo_excel(ruta: str) -> bool:
         with open(archivo_path, "w", encoding="utf-8") as f:
             json.dump(nuevo_contenido, f, indent=4)
 
-        print(f"Checkpoint '{archivo_path}' reiniciado conservando referencia.")
+        logger.info("Checkpoint '%s' reiniciado conservando referencia.", archivo_path)
         logger.info("Checkpoint vaciado conservando excel_referencia: %s", archivo_path)
         return True
 

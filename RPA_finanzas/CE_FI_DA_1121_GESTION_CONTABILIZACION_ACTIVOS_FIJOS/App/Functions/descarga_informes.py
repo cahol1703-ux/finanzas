@@ -74,7 +74,7 @@ def iniciar_driver(
 
     driver = crear_driver(download_dir=ruta_libros, headless=headless)
     logger.info("Driver Selenium creado correctamente con webdriver-manager")
-    print(f"URL RECIBIDA: {url}")
+    logger.debug("URL recibida: %s", url)
     driver.get(url)
     return driver, ruta_libros, archivo_final
 
@@ -237,9 +237,9 @@ def login(driver: Any, texto_error: str, usuariow: str, passw: str, max_intentos
         usuario = usuariow
         contraseña = passw
 
-        print(f"Usuario enviado a JDE: [{usuario}]")
-        print(f"Longitud usuario: {len(usuario)}")
-        print(f"Contraseña longitud: {len(contraseña)}")
+        logger.debug("Usuario enviado a JDE: [%s]", usuario)
+        logger.debug("Longitud usuario: %s", len(usuario))
+        logger.debug("Contraseña longitud: %s", len(contraseña))
 
         # Intenta realizar el login
         if not ingresar_texto_jde(driver, By.ID, "User", usuario):
@@ -271,7 +271,7 @@ def login(driver: Any, texto_error: str, usuariow: str, passw: str, max_intentos
                     continue
 
         if verificar_error_login(driver, By.ID, "SignInError", texto_error):
-            print(f"Login fallido, intento {intentos + 1} de {max_intentos}.")
+            logger.warning("Login fallido, intento %s de %s.", intentos + 1, max_intentos)
             intentos += 1
             continue
 
@@ -725,7 +725,7 @@ def descargar_para_compania(numero_compania, archivo_salida, url, user, passw, s
             try:
                 if comprobacion_archivos(carpeta):
                     logger.info("Descarga completada para compañía %s. Archivos encontrados.", numero_compania)
-                    print(f"Descarga completada para el tipo de compañía {numero_compania}")
+                    logger.info("Descarga completada para el tipo de compañía %s", numero_compania)
                     return
 
                 if driver is None or not sesion_valida(driver):
@@ -752,7 +752,7 @@ def descargar_para_compania(numero_compania, archivo_salida, url, user, passw, s
 
                 if comprobacion_archivos(carpeta):
                     logger.info(f"Descarga completada para #compañía {numero_compania}. Archivos encontrados.")
-                    print(f"Descarga completada para el tipo de compañía {numero_compania}")
+                    logger.info("Descarga completada para el tipo de compañía %s", numero_compania)
                     return
                 else:
                     intentos += 1
@@ -765,11 +765,11 @@ def descargar_para_compania(numero_compania, archivo_salida, url, user, passw, s
                         time.sleep(20)  # FIX: aumentado a 20s para dar más tiempo entre reintentos
                     else:
                         logger.error(f"Se alcanzó el máximo de intentos ({max_intentos}) para #compañía {numero_compania}. No se pudo completar la descarga.")
-                        print(f"Se alcanzó el máximo de intentos ({max_intentos}) para #compañía {numero_compania}. No se pudo completar la descarga.")
+                        logger.error("Se alcanzó el máximo de intentos (%s) para #compañía %s. No se pudo completar la descarga.", max_intentos, numero_compania)
 
             except DriverFatalError as e:
                 logger.error("Error crítico en descarga del informe para compañía %s: %s", numero_compania, e)
-                print(f"ERROR crítico al iniciar el navegador para la compañía {numero_compania}. Revise los logs.")
+                logger.error("ERROR crítico al iniciar el navegador para la compañía %s. Revise los logs.", numero_compania)
                 return
             except DriverRetryableError as e:
                 intentos += 1
@@ -779,7 +779,6 @@ def descargar_para_compania(numero_compania, archivo_salida, url, user, passw, s
                     time.sleep(10)
                 else:
                     logger.error("Se alcanzó el máximo de intentos (%s) para compañía %s. No se pudo completar la descarga.", max_intentos, numero_compania)
-                    print(f"Se alcanzó el máximo de intentos ({max_intentos}) para compañía {numero_compania}. No se pudo completar la descarga.")
             except Exception as e:
                 intentos += 1
                 logger.error("Error en descarga del informe de compañía %s: %s", numero_compania, e)
@@ -788,7 +787,7 @@ def descargar_para_compania(numero_compania, archivo_salida, url, user, passw, s
                     time.sleep(10)
                 else:
                     logger.error("Se alcanzó el máximo de intentos (%s) para compañía %s. No se pudo completar la descarga.", max_intentos, numero_compania)
-                    print(f"Se alcanzó el máximo de intentos ({max_intentos}) para compañía {numero_compania}. No se pudo completar la descarga.")
+                    logger.error("Se alcanzó el máximo de intentos (%s) para compañía %s. No se pudo completar la descarga.", max_intentos, numero_compania)
 
     finally:
         # Siempre cerrar el driver al finalizar cada intento, sin importar si fue exitoso o no.

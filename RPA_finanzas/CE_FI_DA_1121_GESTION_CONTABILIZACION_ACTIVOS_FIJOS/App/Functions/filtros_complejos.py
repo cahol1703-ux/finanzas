@@ -210,7 +210,7 @@ def analizar_pu(driver: Any, batches: dict[str, list[str]], responsables_pu: dic
                     WebDriverWait(driver, timeout=60).until(EC.text_to_be_present_in_element((By.XPATH, '//*[@id="GridLabel0_209.Records"]'), "Registros"))
                     responsable = scroll_pu(driver)
                     responsables_pu[batch] = responsable
-                    print(f"responsable del numero de batch: {batch}, es el usuario {responsable} ")
+                    logger.debug("responsable del numero de batch: %s, es el usuario %s", batch, responsable)
                     break
                 except Exception as e:
                     logger.error(f"Error en analizar batch: {e}")
@@ -420,9 +420,9 @@ def extraer_pv_ov(ruta_excel: str) -> tuple[dict[str, list[str | None]], dict[st
             resultado[f"{orden}-{cuenta}"] = [orden, cuenta, "", "", ""]
 
     if not resultado:
-        print("No se encontraron combinaciones válidas.")
+        logger.warning("No se encontraron combinaciones válidas.")
         return {}, {}, {}
-    print(f"se haran {len(resultado)} busqueda(s) de registros PV y OV")
+    logger.info("Se harán %s búsqueda(s) de registros PV y OV", len(resultado))
     dict1, dict2, dict3 = dividir_dict(resultado)
     return dict1, dict2, dict3
 
@@ -528,7 +528,7 @@ def consultar_orden_ct(driver: Any, dict_ct: dict[str, list[str | None]], emplea
                     intentos += 1
                     reintento_orden(driver)
                     if intentos == 3:
-                        print(f"error al analizar CT")
+                        logger.error("error al analizar CT")
                         return
             try:
                 responsable = driver.find_element(By.XPATH, '//*[@id="divTC0_769"]/span/i')
@@ -626,7 +626,7 @@ def analizar_pv_ov(driver: Any, diccionario: dict[str, list[str | None]], result
                 scroll_ordenes(driver, texto_cuenta)
                 hacer_click_elementos(driver, By.XPATH, '//*[@id="C0_8"]')
                 numero_origen = scroll_ordenes_origen(driver) or ""
-                print(f"para la combinacion: {combinacion} su numero origen es: {numero_origen}")
+                logger.debug("para la combinacion: %s su numero origen es: %s", combinacion, numero_origen)
                 time.sleep(1)
                 resultado[combinacion] = [
                     texto_numero, texto_cuenta, "", "", numero_origen
@@ -637,7 +637,7 @@ def analizar_pv_ov(driver: Any, diccionario: dict[str, list[str | None]], result
                 intentos += 1
                 reintento_orden(driver)
                 if intentos == 3:
-                    print(f"Error al analizar PV y OV")
+                    logger.error("Error al analizar PV y OV")
                     return
         time.sleep(1)
     cerrar_driver(driver)
@@ -664,15 +664,15 @@ def analizar_numeros_origen(driver: Any, empleados: pd.DataFrame, dict_origen: d
     hacer_click_elementos(driver, By.XPATH, '//*[@id="gtab0_1"]')
     hacer_click_elementos(driver, By.XPATH, '//*[@id="gtab0_1"]/option')
     for n_origen in numeros_origen:
-        ingresar_texto_jde_con_copiar_pegar(driver, By.XPATH, '//*[@id="C0_36"]', n_origen)
-        for i in range(2):
-            hacer_click_elementos(driver, By.XPATH, '//*[@id="C0_15"]')
-        interventor = scroll_interventor(driver)
-        responsable = comprobacion_empleados(empleados, interventor)
-        dict_origen[n_origen] = [
-            interventor, responsable
-        ]
-        print(f"para el numero: {n_origen} su interventor es: {interventor}:({responsable})")
+            ingresar_texto_jde_con_copiar_pegar(driver, By.XPATH, '//*[@id="C0_36"]', n_origen)
+            for i in range(2):
+                hacer_click_elementos(driver, By.XPATH, '//*[@id="C0_15"]')
+            interventor = scroll_interventor(driver)
+            responsable = comprobacion_empleados(empleados, interventor)
+            dict_origen[n_origen] = [
+                interventor, responsable
+            ]
+            logger.debug("para el numero: %s su interventor es: %s:(%s)", n_origen, interventor, responsable)
 
     cerrar_driver(driver)
     return
@@ -796,13 +796,13 @@ def completar_pendientes(pendientes: dict[str, list[str | None]], responsables_p
                 intentos += 1
                 reintento_orden(driver)
                 if intentos == 3:
-                    print(f"error al analizar Pendiente")
+                    logger.error("error al analizar Pendiente")
                     return
         try:
             responsable = driver.find_element(By.XPATH, '//*[@id="divTC0_769"]/span/i')
             responsable = responsable.text
             dependencia = comprobacion_empleados(empleados, responsable)
-            print(responsable, dependencia)
+            logger.debug("%s %s", responsable, dependencia)
             if dependencia is None:  # FIX: usar `is None`
                 numero_comprador, numero_envio, xpath_comprador = scroll_n_comprador(driver, 34, 33)
                 input_comprador = driver.find_element(By.XPATH, xpath_comprador)
@@ -823,7 +823,7 @@ def completar_pendientes(pendientes: dict[str, list[str | None]], responsables_p
                 n_dependencia = comprobacion_empleados(empleados, valor_empleado)
                 if n_dependencia is None:  # FIX: usar `is None` y asignación correcta
                     n_dependencia = 'DESCONOCIDA'
-                print(f"para la combinacion: {combinacion} se encontro como responsable: {valor_empleado}:({n_dependencia})")
+                logger.info("para la combinacion: %s se encontro como responsable: %s:(%s)", combinacion, valor_empleado, n_dependencia)
                 responsables_pv_ov[combinacion] = [
                     valores[0], valores[1], valor_empleado, n_dependencia, valores[4]
                 ]
@@ -832,7 +832,7 @@ def completar_pendientes(pendientes: dict[str, list[str | None]], responsables_p
                 iframes = ['//*[@id="e1menuAppIframe"]']
                 cambiar_a_iframe(driver, iframes)
             else:
-                print(f"para la combinacion: {combinacion} se encontro como responsable: {responsable}:({dependencia})")
+                logger.info("para la combinacion: %s se encontro como responsable: %s:(%s)", combinacion, responsable, dependencia)
                 responsables_pv_ov[combinacion] = [
                     valores[0], valores[1], responsable, dependencia, valores[4]
                 ]
@@ -1037,7 +1037,7 @@ def comprobacion_empleados_pu(df: pd.DataFrame, diccionario_actualizado: dict[st
             empleado = sorted(fila.iloc[0].lower().strip().split())
             empleado = ' '.join(empleado)
             if nombre_normalizado in empleado:
-                print(f"para el numero de batch '{clave}' se asigno como responsable '{valor}' ({fila.iloc[1]})")
+                logger.info("para el numero de batch '%s' se asigno como responsable '%s' (%s)", clave, valor, fila.iloc[1])
                 diccionario_actualizado[clave] = str(fila.iloc[1])
     return diccionario_actualizado
 
@@ -1057,7 +1057,7 @@ def determinar_dependencia_pu(excel: str, responsables_pu: dict[str, str | None]
             nuevo_valor = coincidencias.iloc[0, 0]
             diccionario_actualizado[clave] = nuevo_valor
         else:
-            print(f"No se encontro ningun usuario con el nombre: {valor}")
+            logger.warning("No se encontro ningun usuario con el nombre: %s", valor)
     diccionario_actualizado = comprobacion_empleados_pu(empleados, diccionario_actualizado)
     return diccionario_actualizado
 
@@ -1134,5 +1134,4 @@ def actalizar_excel(ruta_excel: str, df: pd.DataFrame) -> None:
     for i, row in enumerate(data, start=2):
         sheet.cell(row=i, column=1, value=row[0])
     wb.save(ruta_excel)
-    print(f"archivo guardado correctamente, por favor revisar la ruta: {ruta_excel}")
-    logger.info(f"archivo guardado correctamente, por favor revisar la ruta: {ruta_excel}")
+    logger.info("archivo guardado correctamente, por favor revisar la ruta: %s", ruta_excel)
